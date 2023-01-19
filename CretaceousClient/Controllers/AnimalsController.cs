@@ -5,11 +5,34 @@ namespace CretaceousClient.Controllers;
 
 public class AnimalsController : Controller
 {
-  public IActionResult Index()
-  {
-    List<Animal> animals = Animal.GetAnimals();
+public async Task<IActionResult> Index(string sortOrder)
+{
+    List<Animal> animalList = Animal.GetAnimals();
+    ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+    ViewData["SpeciesSortParm"] = String.IsNullOrEmpty(sortOrder) ? "species_desc" : "";
+    ViewData["AgeSortParm"] = sortOrder == "Age" ? "age_desc" : "Age";
+    var animals = from a in animalList
+                   select a;
+    switch (sortOrder)
+    {
+        case "name_desc":
+            animals = animals.OrderByDescending(s => s.Name);
+            break;
+        case "species_desc":
+            animals = animals.OrderByDescending(s => s.Species);
+            break;
+        case "Age":
+            animals = animals.OrderBy(s => s.Age);
+            break;
+        case "age_desc":
+            animals = animals.OrderByDescending(s => s.Age);
+            break;
+        default:
+            animals = animals.OrderBy(s => s.Name);
+            break;
+    }
     return View(animals);
-  }
+}
 
   public IActionResult Details(int id)
   {

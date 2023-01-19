@@ -2,9 +2,51 @@
     ViewData["Title"] = "Animals";
 }
 
+@model IEnumerable<CretaceousClient.Models.Animal>
+
 <h1>All Cretaceous Animals</h1>
 
-<h3>Actions:</h3>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">@Html.DisplayNameFor(model => model.Name)</a>
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["SpeciesSortParm"]">@Html.DisplayNameFor(model => model.Species)</a>
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["AgeSortParm"]">@Html.DisplayNameFor(model => model.Age)</a>
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var animal in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelAnimal => animal.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelAnimal => animal.Species)
+            </td>
+            <td>
+                @Html.DisplayFor(modelAnimal => animal.Age)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@animal.AnimalId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@animal.AnimalId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@animal.AnimalId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<!-- <h3>Actions:</h3>
 
 <p>@Html.ActionLink("Add a new animal to the park", "Create")</p>
 
@@ -14,4 +56,4 @@
 {
   <li><strong>@animal.Name</strong> the @animal.Species | <a href="/Animals/Details/@(animal.AnimalId)">View Details</a></li>
 }
-</ol>
+</ol> -->
